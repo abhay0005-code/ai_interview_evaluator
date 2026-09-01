@@ -281,7 +281,57 @@ def unlock_admin(username, password):
         "**Admin access enabled for this browser session.**",
     )
 
-with gr.Blocks(title="AI Interview Evaluator", theme=gr.themes.Soft()) as demo:
+APP_TITLE = "AI Interview Evaluator"
+APP_TAGLINE = "Adaptive AI interview platform with LLM judging + RAG memory"
+
+THEME = gr.themes.Soft(
+    primary_hue=gr.themes.colors.indigo,
+    secondary_hue=gr.themes.colors.blue,
+    neutral_hue=gr.themes.colors.gray,
+    font=[gr.themes.GoogleFont("Inter"), "ui-sans-serif", "system-ui", "sans-serif"],
+    font_mono=[gr.themes.GoogleFont("JetBrains Mono"), "ui-monospace", "monospace"],
+).set(
+    body_background_fill="linear-gradient(160deg, #eef2ff 0%, #e0f2fe 55%, #f0f9ff 100%)",
+    body_background_fill_dark="linear-gradient(160deg, #eef2ff 0%, #e0f2fe 55%, #f0f9ff 100%)",
+    body_text_color="#1e293b",
+    block_background_fill="#ffffff",
+    block_border_color="#e2e8f0",
+    block_title_text_color="#4338ca",
+    input_background_fill="#ffffff",
+    input_border_color="#cbd5e1",
+    button_primary_background_fill="#4f46e5",
+    button_primary_background_fill_hover="#6366f1",
+    button_secondary_background_fill="#e0e7ff",
+    button_secondary_text_color="#3730a3",
+)
+
+CUSTOM_CSS = """
+.gradio-container { max-width: 1200px !important; margin: 0 auto !important; padding: 24px 20px 48px; }
+#app-header {
+    border-radius: 18px;
+    padding: 32px 40px;
+    margin-bottom: 28px;
+    background: linear-gradient(120deg, #4f46e5 0%, #7c3aed 45%, #2563eb 100%);
+    box-shadow: 0 20px 40px -12px rgba(79, 70, 229, 0.45);
+    color: #ffffff;
+}
+#app-header h1 { margin: 0 0 6px; font-size: 2.1rem; font-weight: 700; letter-spacing: -0.5px; color: #ffffff; }
+#app-header p { margin: 0; font-size: 1.05rem; opacity: 0.92; color: #e0e7ff; }
+#app-footer {
+    margin-top: 40px;
+    padding: 18px 24px;
+    border-radius: 14px;
+    text-align: center;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    color: #475569;
+    font-size: 0.9rem;
+}
+#app-footer strong { color: #4338ca; }
+footer { display: none; }
+"""
+
+with gr.Blocks(title=APP_TITLE) as demo:
     with gr.Row():
         user_mode = gr.Radio(["Candidate", "Admin"], value="Candidate", label="Use app as")
         user_mode_status = gr.Markdown("**Candidate mode enabled.** Use the Interview tab to start and complete your interview.")
@@ -289,7 +339,12 @@ with gr.Blocks(title="AI Interview Evaluator", theme=gr.themes.Soft()) as demo:
         admin_username = gr.Textbox(label="Administrator username", value=ADMIN_USERNAME)
         admin_password = gr.Textbox(label="Administrator password", type="password")
         unlock_admin_btn = gr.Button("Unlock Admin", variant="primary")
-    gr.Markdown("# 🎯 AI Interview Evaluator\n### Adaptive AI interview platform with LLM judging + RAG memory")
+    gr.HTML(f"""
+    <div id="app-header">
+        <h1>🎯 {APP_TITLE}</h1>
+        <p>{APP_TAGLINE}</p>
+    </div>
+    """)
 
     with gr.Tab("🔐 Admin", visible=False) as admin_tab:
         gr.Markdown("## Interview Administration")
@@ -407,6 +462,12 @@ with gr.Blocks(title="AI Interview Evaluator", theme=gr.themes.Soft()) as demo:
             rag_top_k = gr.Slider(1, 20, value=5, step=1, label="Top K")
             search_rag_btn = gr.Button("Retrieve Similar Memory")
 
+    gr.HTML(f"""
+    <div id="app-footer">
+        Powered by <strong>OpenAI, Anthropic, Ollama &amp; Hugging Face</strong> · LLM-judged evaluations with <strong>RAG memory</strong> · Built with Gradio
+    </div>
+    """)
+
     # Admin interactions
     user_mode.change(
         apply_user_mode,
@@ -481,4 +542,4 @@ with gr.Blocks(title="AI Interview Evaluator", theme=gr.themes.Soft()) as demo:
     search_rag_btn.click(search_rag_memory, inputs=[rag_vector_db, rag_query, rag_top_k], outputs=rag_memory_table)
 
 if __name__ == "__main__":
-    demo.launch()
+    demo.launch(theme=THEME, css=CUSTOM_CSS)
