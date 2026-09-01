@@ -1,0 +1,9 @@
+services:
+  ai-interview:
+    build: .
+    ports:
+      - "7860:7860"
+    env_file:
+      - .env
+    volumes:
+      - ./app/data:/app/app/data

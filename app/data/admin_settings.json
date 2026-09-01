@@ -1,0 +1,15 @@
+{
+  "sections": [
+    "Generative AI / LLM fundamentals"
+  ],
+  "difficulty": "Senior",
+  "questions_per_session": 10,
+  "adaptive": true,
+  "time_limit_seconds": 180,
+  "provider": "Hugging Face / Transformers (Local)",
+  "model": "Qwen/Qwen2.5-32B-Instruct",
+  "vector_db": "ChromaDB (Local)",
+  "rag_top_k": 5,
+  "temperature": 0.2,
+  "updated_at": "2026-08-18T00:17:30"
+}

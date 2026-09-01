@@ -1,0 +1,16 @@
+gradio>=5.0,<7
+openai>=1.40
+anthropic>=0.34
+chromadb>=0.5
+python-dotenv>=1.0
+sentence-transformers>=3.0
+faiss-cpu>=1.8
+qdrant-client>=1.10
+pinecone>=5.0
+reportlab>=4.0
+openpyxl>=3.1
+pandas>=2.0
+
+requests>=2.31
+huggingface_hub>=0.24
+pytest>=8.0
